@@ -1,17 +1,17 @@
 #pragma once
-
 #include "roster.h"
-
 
 //Default Construstor
 Roster::Roster() :classSize(5) {
 	this->classRosterArray = {};
 	for (Student* p : this->classRosterArray) p = nullptr;
-	std::cout << "New Class Roster Created Successfully!!";
+	std::cout << "New Class Roster Created Successfully!!" << std::endl;
 };
 //Destructor
 Roster::~Roster() {
-	for (Student* p : this->classRosterArray) delete p;
+	std::cout << "Roster Object Destruction Started:" << std::endl;
+	for (Student* p : this->classRosterArray) if (p != nullptr) { delete p; }
+	std::cout << "Roster object destroyed" << std::endl;
 };
 
 //Private Member Functions
@@ -79,23 +79,28 @@ void Roster::add(Student* sPtr, int index) {
 * @return void but function will indicate with console output success or failure
 */
 void Roster::remove(std::string studentToDel) {
-	std::string success = "Operation Failed!";
-	int indexOfStudent = 0;
-	for (int i = 0; i < classRosterArray.size() && i != indexOfStudent ; i++) {
+	std::cout << "\n\r" << std::endl;
+
+	std::string success = "Operation Failed: Student with this ID Not Found!!"; //Default string
+	int indexOfStudent = -1;
+	for (int i = 0; i < classRosterArray.size(); i++) {
 		if ((classRosterArray[i] != nullptr) && (classRosterArray[i]->getStudentID() == studentToDel)) {
 			indexOfStudent = i;
+			delete classRosterArray[i];
 			classRosterArray[i] = nullptr;
+			success = (classRosterArray[indexOfStudent] == nullptr) ? "Student Sucessfully Removed from Roster!!" :
+				"Failed to Remove Student from Roster!!";
 			break;
 		};
 	};
-	success = (classRosterArray[indexOfStudent] == nullptr) ? "Student Sucessfully Removed from Roster!!" :
-		"Failed to Remove Student from Roster!!";
-	std::cout << success << std::endl;
+	
+	std::cout << success << "\n\r" << std::endl;
 		
 	
 };
 /***/
 void Roster::printAll() {
+	std::cout << "\n\r\n\r" << "Class Roster Information:" << "\n\r" << std::endl;
 	for (Student* sPtr : this->classRosterArray) {
 		if (sPtr == nullptr) {
 			continue;
@@ -108,25 +113,40 @@ void Roster::printAverageDaysInCourse(std::string studentID) {
 	Student* thisStud = getStudentByID(studentID);
 	int avgDaysInCOurse = 0;
 	if (thisStud != nullptr) {
-		std::cout << "The average days spent in one course for " <<
-			thisStud->getFirstName() << " " << thisStud->getLastName() <<
+		std::cout <<  thisStud->getFirstName() << " " << thisStud->getLastName() <<
 			" is " << thisStud->avgClassLength() << "." << std::endl;
 	}
 };
 /***/
 void Roster::printInvalidEmails() {
-
+	std::cout << "\n\r\n\r" << "The following students in this class roster have invalid emails:" << "\n\r" << std::endl;
+	int count = 0;
+	for (Student* sPtr : classRosterArray) {
+		if (!Student::hasValidEmailAddress(sPtr->getEmail())) {
+			count++;
+			std::cout << "Student: " << sPtr->getFirstName() << " " << sPtr->getLastName() << 
+				"\t Email: " << sPtr->getEmail() << std::endl;
+		}
+	};
+	if (count == 0) {
+		std::cout << "There are no invalid emails on this class roster" << std::endl;
+	}
 };
 /***/
-void Roster::printByDegreeProgram(DegreeProgram degreeProgram) {
+void Roster::printByDegreeProgram(DegreeProgram prog) {
+	std::cout << "\n\r\n\r" << "Students in the " << Student::enumToString(prog) << 
+		" program are as follows:" << "\n\r" << std::endl;
+	for (Student* sPtr : this->classRosterArray) {
+		if (sPtr->getProgram() == prog) {
+			std::cout << "Student: " << sPtr->getFirstName() << " " << sPtr->getLastName() <<
+				"\tProgram: " << Student::enumToString(sPtr->getProgram()) << std::endl;
+		};
 
+	};
 };
 
 
 //Static Functions
-
-
-
 /**
  To parse the student data strings in individual pieces of useable data in a string vector
  @param string that you wish to slice
@@ -153,13 +173,11 @@ std::array<std::string, 9> Roster::parseStudentDataByDelimiter(std::string strin
 
 	return outputArray;
 };
-
 /**
 	Create student instance from student vector<std::string>
 	@param vector of student information in string format
 	@return student object
 */
-
 Student* Roster::createStudentFromArray(std::array<std::string, 9>& studentArray) {
 	//Create new student object out of stundent data string
 	Student* newStudent = new Student(studentArray[0], studentArray[1], studentArray[2],

@@ -15,8 +15,6 @@ private:
 	//Private Member Functions
 	int findNextAvailableIndex();
 	
-	Student* getStudentByIndex(int index);
-	Student* getStudentByID(std::string student_ID);
 
 public:
 	//Default Constructor
@@ -26,6 +24,8 @@ public:
 
 	//Public Member Functions
 	int getClassSize();
+	Student* getStudentByID(std::string student_ID);
+	Student* getStudentByIndex(int index);
 	void add(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
 		int age, int daysInCourse1, int daysInCourse2, int daysInCourse3, DegreeProgram degreeprogram);
 	void add(Student* sPtr, int index);

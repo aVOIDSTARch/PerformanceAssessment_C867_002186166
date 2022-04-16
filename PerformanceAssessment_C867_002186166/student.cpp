@@ -4,12 +4,7 @@
 #include <format>
 #include <regex>
 
-//Default Construtor with no data degree is unknown and age is -1 
-Student::Student() :studentID(""), firstName(""), lastName(""),
-emailAddress(""), age(-1), degreeProgram(DegreeProgram::UNKNOWN) {
-	Student::setDaysToCompleteThreeClasses( 0,0,0 );
-	std::cout << "Student Construction Complete.";
-};
+
 
 //Constructer with all parameters using array for class lengths
 Student::Student(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
@@ -17,7 +12,7 @@ Student::Student(std::string studentID, std::string firstName, std::string lastN
 	:studentID(studentID), firstName(firstName), lastName(lastName),
 	emailAddress(emailAddress), age(age), degreeProgram(degProgram) {
 	Student::setDaysToCompleteThreeClasses(daysForClasses);
-	std::cout << "Student Construction Complete.";
+	std::cout << "Student Construction Complete." << std::endl << " " << std::endl;
 };
 
 //Constructer with all parameters using individual ints for class lengths
@@ -26,7 +21,7 @@ Student::Student(std::string studentID, std::string firstName, std::string lastN
 	:studentID(studentID), firstName(firstName), lastName(lastName),
 	emailAddress(emailAddress), age(age), degreeProgram(degProgram) {
 	Student::setDaysToCompleteThreeClasses(daysForClass1, daysForClass2, daysForClass3);
-	std::cout << "Student Construction Complete.";
+	std::cout << "Student Construction Complete." << std::endl;
 };
 
 //Copy Constructor
@@ -38,7 +33,7 @@ Student::Student(std::string studentID, std::string firstName, std::string lastN
 
 //Destructor
 Student::~Student() {
-	std::cout << "Student Destruction Complete.";
+	std::cout << "Student Destruction Complete." << std::endl;
 };
 
 //Mutators - public access to mutate member variables
@@ -143,7 +138,7 @@ std::string Student::enumToString(DegreeProgram d) {
 		stringFromEnum = "SOFTWARE";
 		break;
 	default:
-		stringFromEnum = "UNKNOWN";
+		stringFromEnum = "ERROR";
 		break;
 	}
 
@@ -174,7 +169,7 @@ DegreeProgram Student::programStringToEnum(std::string program) {
 		programEnum = DegreeProgram::SOFTWARE;
 	}
 	else {
-		programEnum = DegreeProgram::UNKNOWN; //assigns a default of unknown for error case 
+		programEnum = DegreeProgram::UNKNOWN;
 	};
 
 	return programEnum;
@@ -186,6 +181,6 @@ Determine if email is in a valid format
 @return bool true if valid false if invalid
 */
 bool Student::hasValidEmailAddress(std::string email) {
-	const std::regex pattern("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}$");
+	const std::regex pattern("^[A-Za-z_][A-Za-z0-9_+-.]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}$");
 	return std::regex_match(email, pattern);
 };

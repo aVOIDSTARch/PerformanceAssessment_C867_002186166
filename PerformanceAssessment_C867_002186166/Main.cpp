@@ -11,10 +11,29 @@
 
 #include <iostream>
 #include "roster.h"
+/**
+Reusable function to display project details in the console
 
+*/
+void printProjectDetails(std::string courseTitle, std::string progLang, std::string school,
+    std::string ID, std::string devName, std::string email) {
+    std::cout << "This project is for " << courseTitle << " at " << school << "." << std::endl <<
+        "The solution is implemented in the " << progLang << " programming language by " << 
+        devName << std::endl << "Student ID: " << ID << " EMail: " << email << "\n\r\n\r" << std::endl;
+}
 
 int main()
 {
+    //Project Details
+    std::string course = "Scripting and Programming - Applications - C867";
+    std::string lang = "C++";
+    std::string school = "Western Governor's University";
+    std::string name = "Louis Casinelli Jr";
+    std::string ID = "002186166";
+    std::string email = "lcasine@wgu.edu";
+
+    //Print Project Details to Console
+    printProjectDetails(course, lang, school, ID, name, email );
     const std::string d = ","; //delimiter
     //Student Data Table
     std::string studentData[] =
@@ -25,20 +44,39 @@ int main()
         "A4,Erin,Black,Erin.black@comcast.net,22,50,58,40,SECURITY",
         "A5,Louis,Casinelli,lcasine@wgu.edu,45,7,19,35,SOFTWARE"
     };
-   
+   //Initialize a New Roster Object to Hold the Student Data Table
     Roster* myClassRoster = new Roster;
 
+    //Populate Roster with student pointers from the Student Data Table Array
     for (int i = 0; i < myClassRoster->getClassSize(); i++) {
         std::array<std::string, 9> tempArray = Roster::parseStudentDataByDelimiter(studentData[i], d);
         Student* tempStudent = Roster::createStudentFromArray(tempArray);
         myClassRoster->add(tempStudent, i );
     };
-
+    //Print Current State of Roster
     myClassRoster->printAll();
 
+    //Display Invalid Emails
     myClassRoster->printInvalidEmails();
+
+    //Output average class length by student ID using the current object to retrieve the student ID
+    std::cout << "\n\r\n\r" << "The average length per course for the following students is:" << "\n\r" << std::endl;
+    for (int i = 0; i < 5; ++i) {
+        myClassRoster->printAverageDaysInCourse((myClassRoster->getStudentByIndex(i))->getStudentID());
+    };
     
-    
+    //Print Students in Roster with the Desired Degree Program
+    myClassRoster->printByDegreeProgram(DegreeProgram::SOFTWARE);
+
+    //Remove Selected Student From Roster by StudentID
+    myClassRoster->remove("A3");
+    //Verify Removal
+    myClassRoster->printAll();
+    //Show Double Delete Not Possible
+    myClassRoster->remove("A3");
+
+   
+    delete myClassRoster;
 
 
     
@@ -50,6 +88,3 @@ int main()
 };
 
 
-void projectDetails(std::string courseTitle, std::string progLang, std::string ID, std::string devName) {
-    std::cout << "This project is for " << courseTitle << ". " << std::endl <<
-};

@@ -15,7 +15,7 @@ private:
 	int age;
 	std::array<int, 3> daysToCompleteThreeClasses;
 	DegreeProgram degreeProgram;
-	std::string formattedStudentInfo;
+	
 
 	//private functions
 	
