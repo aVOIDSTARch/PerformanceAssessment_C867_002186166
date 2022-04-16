@@ -8,6 +8,7 @@
 Student::Student() :studentID(""), firstName(""), lastName(""),
 emailAddress(""), age(-1), degreeProgram(DegreeProgram::UNKNOWN) {
 	Student::setDaysToCompleteThreeClasses( 0,0,0 );
+	std::cout << "Student Construction Complete.";
 };
 
 //Constructer with all parameters using array for class lengths
@@ -16,6 +17,7 @@ Student::Student(std::string studentID, std::string firstName, std::string lastN
 	:studentID(studentID), firstName(firstName), lastName(lastName),
 	emailAddress(emailAddress), age(age), degreeProgram(degProgram) {
 	Student::setDaysToCompleteThreeClasses(daysForClasses);
+	std::cout << "Student Construction Complete.";
 };
 
 //Constructer with all parameters using individual ints for class lengths
@@ -24,6 +26,19 @@ Student::Student(std::string studentID, std::string firstName, std::string lastN
 	:studentID(studentID), firstName(firstName), lastName(lastName),
 	emailAddress(emailAddress), age(age), degreeProgram(degProgram) {
 	Student::setDaysToCompleteThreeClasses(daysForClass1, daysForClass2, daysForClass3);
+	std::cout << "Student Construction Complete.";
+};
+
+//Copy Constructor
+//Student::Student(const Student &s) :studentID(s.studentID), firstName(s.firstName), lastName(s.lastName),
+//emailAddress(s.emailAddress), age(s.age), degreeProgram(s.degreeProgram) {
+//	this->Student::setDaysToCompleteThreeClasses(s.daysToCompleteThreeClasses[0], s.daysToCompleteThreeClasses[1],
+//		s.daysToCompleteThreeClasses[2]);
+//};
+
+//Destructor
+Student::~Student() {
+	std::cout << "Student Destruction Complete.";
 };
 
 //Mutators - public access to mutate member variables
@@ -52,13 +67,31 @@ DegreeProgram Student::getProgram() { return this->degreeProgram; };
 //Public Member Functions
 
 /**
-Print tab delimited studenbt object information to console
+Print tab delimited studenbt object state to console using 
+C++ 20 specific string formatter
 @param implicit this
 @retrun void
 */
-void Student::print() { 
+void Student::printC20() { 
 	std::cout << createFormatedStudentData(*this) << std::endl;
-	 };
+	};
+/**
+Print tab delimited student object state to console using more
+compatible cout statement format
+@param implicit this student pointer
+@return void all output to console
+*/
+void Student::print() {
+	std::cout << this->getStudentID() << "\t" <<
+		"First Name: " << this->getFirstName() << "\t" <<
+		"Last Name: " << this->getLastName() << "\t" <<
+		"Age: " << this->getAge() << "\t" <<
+		"Days In Courses: { " << this->getTimeToCompleteClassAtIndex(0) << " , " <<
+		this->getTimeToCompleteClassAtIndex(1) << " , " <<
+		this->getTimeToCompleteClassAtIndex(2) << " }" << "\t" <<
+		"Degree Program: " << enumToString(this->getProgram()) << std::endl;
+};
+
 /**
 Calculate the average time it took student to complete a class
 @param implicit this
@@ -75,6 +108,7 @@ int Student::avgClassLength(){
 //Static Functions
 
 /**
+* FOR C++20 or later
 Takes student object and creates string representing the state for output to console
 @param student object
 @return string conprised of internal state data for student formatted with tab delimiters as required
@@ -84,7 +118,7 @@ std::string Student::createFormatedStudentData(Student s) {
 	std::string formattedStr = std::format("{}\tFirst Name: {}\tLast Name: {}\tEmail: {}\tAge: {}\tdaysInCourse: {}, {}, {}\tDegree Program: {}",
 		s.getStudentID(), s.getFirstName(), s.getLastName(), s.getEmail(), std::to_string(s.getAge()),  
 		std::to_string(s.getTimeToCompleteClassAtIndex(0)), std::to_string(s.getTimeToCompleteClassAtIndex(1)),
-		std::to_string(s.getTimeToCompleteClassAtIndex(2)), enumToString(s.getProgram()));
+		std::to_string(s.getTimeToCompleteClassAtIndex(2)), Student::enumToString(s.getProgram()));
 
 	return formattedStr;
 };
@@ -152,6 +186,6 @@ Determine if email is in a valid format
 @return bool true if valid false if invalid
 */
 bool Student::hasValidEmailAddress(std::string email) {
-	const std::regex pattern("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
+	const std::regex pattern("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}$");
 	return std::regex_match(email, pattern);
 };

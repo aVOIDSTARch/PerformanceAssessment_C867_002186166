@@ -29,6 +29,11 @@ public:
 	//Constructor with all parameters using individual ints for each class length
 	Student(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
 		int age, int daysForClass1, int daysForClass2, int daysForClass3, DegreeProgram degProgram);
+	//Copy Constructor
+	Student(Student* s);
+	//Destructor
+	~Student();
+
 
 	//Mutators
 	void setStudentID(std::string student_ID);
@@ -51,6 +56,7 @@ public:
 	DegreeProgram getProgram();
 
 	//Member Functions
+	void printC20();
 	void print();
 	int avgClassLength();
 
