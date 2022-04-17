@@ -1,21 +1,48 @@
 #pragma once
 
 #include "student.h"
-#include <format>
 #include <regex>
 
+/**Default Construtor with no data degree is UNKNOWNand age is - 1
+@param none
+@returns student Pointer
+*/
+Student::Student() :studentID(""), firstName(""), lastName(""),
+emailAddress(""), age(-1), degreeProgram(DegreeProgram::UNKNOWN) {
+	Student::setDaysToCompleteThreeClasses(0, 0, 0);
+	std::cout << "Student Construction Complete." << std::endl;
+};
 
-
-//Constructer with all parameters using array for class lengths
+/**Constructer with all parameters using array for class lengths
+@param string student ID
+@param string first name
+@param string last name
+@param string email 
+@param int age
+@param reference to an int array of length 3 with lengths og three classes in days
+@param enum class DegreeProgram
+@returns student Pointer
+* */
 Student::Student(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
-	int age, std::array<int, 3> daysForClasses, DegreeProgram degProgram) 
+	int age, std::array<int, 3> &daysForClasses, DegreeProgram degProgram) 
 	:studentID(studentID), firstName(firstName), lastName(lastName),
 	emailAddress(emailAddress), age(age), degreeProgram(degProgram) {
 	Student::setDaysToCompleteThreeClasses(daysForClasses);
 	std::cout << "Student Construction Complete." << std::endl << " " << std::endl;
 };
 
-//Constructer with all parameters using individual ints for class lengths
+/**Constructer with all parameters using individual ints for class lengths
+@param string student ID
+@param string first name
+@param string last name
+@param string email
+@param int age
+@param int length of class one in days
+@param int length of class two in days
+@param int length of class three in days
+@param enum class DegreeProgram
+@returns student Pointer
+* */
 Student::Student(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
 	int age, int daysForClass1, int daysForClass2, int daysForClass3, DegreeProgram degProgram)
 	:studentID(studentID), firstName(firstName), lastName(lastName),
@@ -23,13 +50,6 @@ Student::Student(std::string studentID, std::string firstName, std::string lastN
 	Student::setDaysToCompleteThreeClasses(daysForClass1, daysForClass2, daysForClass3);
 	std::cout << "Student Construction Complete." << std::endl;
 };
-
-//Copy Constructor
-//Student::Student(const Student &s) :studentID(s.studentID), firstName(s.firstName), lastName(s.lastName),
-//emailAddress(s.emailAddress), age(s.age), degreeProgram(s.degreeProgram) {
-//	this->Student::setDaysToCompleteThreeClasses(s.daysToCompleteThreeClasses[0], s.daysToCompleteThreeClasses[1],
-//		s.daysToCompleteThreeClasses[2]);
-//};
 
 //Destructor
 Student::~Student() {
@@ -48,7 +68,6 @@ void Student::setDaysToCompleteThreeClasses(const std::array<int, 3> classLength
 	this->daysToCompleteThreeClasses = { classLengthsInDays[0], classLengthsInDays[1], classLengthsInDays[2] };};
 void Student::setDegreeProgram(const DegreeProgram program) { this->degreeProgram; };
 
-
 //Accessors - public access to value of state variables
 std::string Student::getStudentID() { return this->studentID; };
 std::string Student::getFirstName() { return this->firstName; };
@@ -60,16 +79,6 @@ int Student::getTimeToCompleteClassAtIndex(int index) {
 DegreeProgram Student::getProgram() { return this->degreeProgram; };
 
 //Public Member Functions
-
-/**
-Print tab delimited studenbt object state to console using 
-C++ 20 specific string formatter
-@param implicit this
-@retrun void
-*/
-void Student::printC20() { 
-	std::cout << createFormatedStudentData(*this) << std::endl;
-	};
 /**
 Print tab delimited student object state to console using more
 compatible cout statement format
@@ -94,30 +103,13 @@ Calculate the average time it took student to complete a class
 */
 int Student::avgClassLength(){ 
 	int tempTotalLen = 0;
-
+	//iterate over class length array and add each int to total
 	for (int i : this->daysToCompleteThreeClasses) tempTotalLen += i; //iterate over array to get total
-
+	//return the average class length
 	return tempTotalLen / 3; //return average
 };
 
 //Static Functions
-
-/**
-* FOR C++20 or later
-Takes student object and creates string representing the state for output to console
-@param student object
-@return string conprised of internal state data for student formatted with tab delimiters as required
-*/
-std::string Student::createFormatedStudentData(Student s) {
-	//create properly formated string for output to console
-	std::string formattedStr = std::format("{}\tFirst Name: {}\tLast Name: {}\tEmail: {}\tAge: {}\tdaysInCourse: {}, {}, {}\tDegree Program: {}",
-		s.getStudentID(), s.getFirstName(), s.getLastName(), s.getEmail(), std::to_string(s.getAge()),  
-		std::to_string(s.getTimeToCompleteClassAtIndex(0)), std::to_string(s.getTimeToCompleteClassAtIndex(1)),
-		std::to_string(s.getTimeToCompleteClassAtIndex(2)), Student::enumToString(s.getProgram()));
-
-	return formattedStr;
-};
-
 /**
 Convert an enum of type DegreeProgam to a string
 @param DegreeProgram enum 
@@ -125,7 +117,6 @@ Convert an enum of type DegreeProgam to a string
 */
 std::string Student::enumToString(DegreeProgram d) {
 	std::string stringFromEnum;
-
 	//switch to assign string from enum class of type DegreeProgram
 	switch (d) {
 	case DegreeProgram::SECURITY:
@@ -141,7 +132,6 @@ std::string Student::enumToString(DegreeProgram d) {
 		stringFromEnum = "ERROR";
 		break;
 	}
-
 	return stringFromEnum;
 };
 
@@ -153,25 +143,20 @@ variable of type DegreeProgram
 */
 DegreeProgram Student::programStringToEnum(std::string program) {
 	DegreeProgram programEnum;
+	//string versions of the enum class DegreeProgram
 	std::string security = "SECURITY";
 	std::string network = "NETWORK";
 	std::string software = "SOFTWARE";
-	
-
 	//conditional to assign an enum class of type DegreeProgram to the mathcing string of text
 	if (program == security) {
 		programEnum = DegreeProgram::SECURITY;
-	}
-	else if (program == network) {
+	}else if (program == network) {
 		programEnum = DegreeProgram::NETWORK;
-	}
-	else if (program == software) {
+	}else if (program == software) {
 		programEnum = DegreeProgram::SOFTWARE;
-	}
-	else {
-		programEnum = DegreeProgram::UNKNOWN;
+	}else {
+		programEnum = DegreeProgram::UNKNOWN; //For default constructor
 	};
-
 	return programEnum;
 };
 
@@ -181,6 +166,7 @@ Determine if email is in a valid format
 @return bool true if valid false if invalid
 */
 bool Student::hasValidEmailAddress(std::string email) {
+	//Regular expression pattern for matching function
 	const std::regex pattern("^[A-Za-z_][A-Za-z0-9_+-.]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}$");
-	return std::regex_match(email, pattern);
+	return std::regex_match(email, pattern); //return boolean value
 };

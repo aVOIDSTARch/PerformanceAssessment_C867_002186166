@@ -11,11 +11,10 @@ class Roster {
 private:
 	//Private Member Variables
 	std::array<Student*, 5> classRosterArray; //array of Student object pointers
-	int classSize;
+	int classSize; 
 	//Private Member Functions
 	int findNextAvailableIndex();
 	
-
 public:
 	//Default Constructor
 	Roster();
@@ -36,7 +35,6 @@ public:
 	void printByDegreeProgram(DegreeProgram degreeProgram);
 	
 	//Static Functions
-	
 	static Student* createStudentFromArray(std::array<std::string, 9>& studentArray);
 	static std::array<std::string, 9> parseStudentDataByDelimiter(std::string stringToSlice, const std::string delim);
 };

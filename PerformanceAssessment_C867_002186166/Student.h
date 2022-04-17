@@ -16,24 +16,17 @@ private:
 	std::array<int, 3> daysToCompleteThreeClasses;
 	DegreeProgram degreeProgram;
 	
-
-	//private functions
-	
-
 public:
-	//Default Construtor
+	//Default Construtor - no inputs
 	Student();
 	//Constructer with all parameters using array for class lengths
 	Student(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
-		int age, std::array<int, 3> daysForClasses, DegreeProgram degProgram);
+		int age, std::array<int, 3> &daysForClasses, DegreeProgram degProgram);
 	//Constructor with all parameters using individual ints for each class length
 	Student(std::string studentID, std::string firstName, std::string lastName, std::string emailAddress,
 		int age, int daysForClass1, int daysForClass2, int daysForClass3, DegreeProgram degProgram);
-	//Copy Constructor
-	Student(Student* s);
 	//Destructor
 	~Student();
-
 
 	//Mutators
 	void setStudentID(std::string student_ID);
@@ -45,7 +38,6 @@ public:
 	void setDaysToCompleteThreeClasses(std::array<int, 3>);
 	void setDegreeProgram(DegreeProgram program);
 
-
 	//Accessors
 	std::string getStudentID();
 	std::string getFirstName();
@@ -56,18 +48,11 @@ public:
 	DegreeProgram getProgram();
 
 	//Member Functions
-	void printC20();
 	void print();
 	int avgClassLength();
 
 	//Static Functions
 	static DegreeProgram programStringToEnum(std::string program);
 	static std::string enumToString(DegreeProgram d);
-	static std::string createFormatedStudentData(Student s);
 	static bool hasValidEmailAddress(std::string email);
-
-
-
-
-
 };

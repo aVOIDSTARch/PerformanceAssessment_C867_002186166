@@ -13,10 +13,17 @@
 #include "roster.h"
 /**
 Reusable function to display project details in the console
-
+@param string course title
+@param string program language 
+@param string school name
+@param string student ID
+@param string developer name
+@param sting email
+@return void - output is sent to console
 */
 void printProjectDetails(std::string courseTitle, std::string progLang, std::string school,
     std::string ID, std::string devName, std::string email) {
+    //build and output formatted string with project details
     std::cout << "This project is for " << courseTitle << " at " << school << "." << std::endl <<
         "The solution is implemented in the " << progLang << " programming language by " << 
         devName << std::endl << "Student ID: " << ID << " EMail: " << email << "\n\r\n\r" << std::endl;
@@ -35,6 +42,7 @@ int main()
     //Print Project Details to Console
     printProjectDetails(course, lang, school, ID, name, email );
     const std::string d = ","; //delimiter
+
     //Student Data Table
     std::string studentData[] =
     {
@@ -46,7 +54,6 @@ int main()
     };
    //Initialize a New Roster Object to Hold the Student Data Table
     Roster* myClassRoster = new Roster;
-
     //Populate Roster with student pointers from the Student Data Table Array
     for (int i = 0; i < myClassRoster->getClassSize(); i++) {
         std::array<std::string, 9> tempArray = Roster::parseStudentDataByDelimiter(studentData[i], d);
@@ -55,36 +62,23 @@ int main()
     };
     //Print Current State of Roster
     myClassRoster->printAll();
-
     //Display Invalid Emails
     myClassRoster->printInvalidEmails();
-
     //Output average class length by student ID using the current object to retrieve the student ID
     std::cout << "\n\r\n\r" << "The average length per course for the following students is:" << "\n\r" << std::endl;
     for (int i = 0; i < 5; ++i) {
         myClassRoster->printAverageDaysInCourse((myClassRoster->getStudentByIndex(i))->getStudentID());
     };
-    
     //Print Students in Roster with the Desired Degree Program
     myClassRoster->printByDegreeProgram(DegreeProgram::SOFTWARE);
-
     //Remove Selected Student From Roster by StudentID
     myClassRoster->remove("A3");
     //Verify Removal
     myClassRoster->printAll();
     //Show Double Delete Not Possible
     myClassRoster->remove("A3");
-
-   
+    //release memory
     delete myClassRoster;
-
-
-    
-
-
-
-
-
 };
 
 
