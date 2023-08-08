@@ -129,7 +129,7 @@ void Roster::remove(std::string studentToDel) {
 			indexOfStudent = i; //if succeeds assign index to results variable
 			delete classRosterArray[i]; //send delete function to existing student object
 			classRosterArray[i] = nullptr; //assign null pointer as place holder
-			//update output string dependent of success od operation
+			//update output string dependent of success of operation
 			success = (classRosterArray[indexOfStudent] == nullptr) ? "Student Sucessfully Removed from Roster!!" :
 				"Failed to Remove Student from Roster!!";
 			break;
